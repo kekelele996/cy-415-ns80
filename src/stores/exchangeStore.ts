@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 import { exchangeApi } from '@/api/exchangeApi';
 import { ExchangeStatus } from '@/constants/exchange';
 import type { Exchange, ExchangeDraft } from '@/models/exchange';
-import { message } from '@/utils/message';
+import { message, messageAsync } from '@/utils/message';
 
 export const useExchangeStore = defineStore('exchanges', {
   state: () => ({
@@ -43,6 +43,24 @@ export const useExchangeStore = defineStore('exchanges', {
       await exchangeApi.transition(id, ExchangeStatus.REJECTED);
       this.exchanges = await exchangeApi.list();
       message('已拒绝交换', 'success');
+    },
+    /** 物主从申请人当前可交换的物品里另选一件，提交后待申请人确认 */
+    async proposeReselect(id: string, reselectFromItemId: string, operatorId: string) {
+      await messageAsync(
+        () => exchangeApi.proposeReselect(id, reselectFromItemId, operatorId),
+        '改选请求已提交，等待申请人确认',
+      );
+      this.exchanges = await exchangeApi.list();
+    },
+    /** 申请人接受改选，交换对象以改选结果为准 */
+    async acceptReselect(id: string, operatorId: string) {
+      await messageAsync(() => exchangeApi.acceptReselect(id, operatorId), '已接受改选，交换对象已更新');
+      this.exchanges = await exchangeApi.list();
+    },
+    /** 申请人拒绝改选，请求结束，双方物品都不变 */
+    async rejectReselect(id: string, operatorId: string) {
+      await messageAsync(() => exchangeApi.rejectReselect(id, operatorId), '已拒绝改选，本次交换请求结束');
+      this.exchanges = await exchangeApi.list();
     },
     async complete(id: string) {
       await exchangeApi.transition(id, ExchangeStatus.COMPLETED);

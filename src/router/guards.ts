@@ -23,7 +23,9 @@ export const setupRouterGuards = (router: Router) => {
     }
 
     const statusProbe = itemStore.items.some((item) => item.status === ItemStatus.AVAILABLE);
-    const exchangeProbe = exchangeStore.exchanges.some((item) => item.status === ExchangeStatus.PENDING);
+    const exchangeProbe = exchangeStore.exchanges.some(
+      (item) => item.status === ExchangeStatus.PENDING || item.status === ExchangeStatus.RESELECTING,
+    );
     if (import.meta.env.DEV && (statusProbe || exchangeProbe)) {
       console.debug(LOG_MESSAGES.storageHydrated);
     }

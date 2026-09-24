@@ -10,6 +10,7 @@
     <div class="stats-row">
       <span>全部 {{ stats.total }}</span>
       <span>待确认 {{ stats.pending }}</span>
+      <span>改选待确认 {{ stats.reselecting }}</span>
       <span>已同意 {{ stats.accepted }}</span>
       <span>已完成 {{ stats.completed }}</span>
     </div>
@@ -35,6 +36,9 @@
         @accept="exchangeStore.accept"
         @reject="exchangeStore.reject"
         @complete="completeExchange"
+        @accept-reselect="acceptReselect"
+        @reject-reselect="rejectReselect"
+        @propose-reselect="proposeReselect"
       />
     </div>
     <EmptyState
@@ -76,6 +80,21 @@ const stats = useExchangeStats(() => exchangeStore.exchanges);
 const completeExchange = async (id: string) => {
   await exchangeStore.complete(id);
   itemStore.items = itemStore.items.map((item) => item);
+};
+
+const proposeReselect = async (id: string, reselectFromItemId: string) => {
+  if (!authStore.currentUser) return;
+  await exchangeStore.proposeReselect(id, reselectFromItemId, authStore.currentUser.id);
+};
+
+const acceptReselect = async (id: string) => {
+  if (!authStore.currentUser) return;
+  await exchangeStore.acceptReselect(id, authStore.currentUser.id);
+};
+
+const rejectReselect = async (id: string) => {
+  if (!authStore.currentUser) return;
+  await exchangeStore.rejectReselect(id, authStore.currentUser.id);
 };
 
 void ExchangeStatus.PENDING;

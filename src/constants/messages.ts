@@ -19,7 +19,7 @@ export const FORM_MESSAGES = {
 export const LOG_MESSAGES = {
   storageHydrated: 'storage hydrated with status maps',
   itemStatusUsed: `ItemStatus includes ${ItemStatus.AVAILABLE}, ${ItemStatus.EXCHANGED}, ${ItemStatus.OFFLINE}`,
-  exchangeStatusUsed: `ExchangeStatus includes ${ExchangeStatus.PENDING}, ${ExchangeStatus.ACCEPTED}, ${ExchangeStatus.REJECTED}, ${ExchangeStatus.COMPLETED}`,
+  exchangeStatusUsed: `ExchangeStatus includes ${ExchangeStatus.PENDING}, ${ExchangeStatus.RESELECTING}, ${ExchangeStatus.ACCEPTED}, ${ExchangeStatus.REJECTED}, ${ExchangeStatus.COMPLETED}`,
 };
 
 export const STATUS_MESSAGE_MAP = {
@@ -27,6 +27,7 @@ export const STATUS_MESSAGE_MAP = {
   [ItemStatus.EXCHANGED]: '这件物品已完成交换',
   [ItemStatus.OFFLINE]: '这件物品已下架',
   [ExchangeStatus.PENDING]: '等待对方确认',
+  [ExchangeStatus.RESELECTING]: '物主想另换一件你的物品，等待你确认改选',
   [ExchangeStatus.ACCEPTED]: '交换已同意，可确认完成',
   [ExchangeStatus.REJECTED]: '交换请求已拒绝',
   [ExchangeStatus.COMPLETED]: '交换流程已完成',

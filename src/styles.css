@@ -584,6 +584,28 @@ textarea {
   font-size: 0.8rem;
 }
 
+.exchange-card__reselect-tag {
+  color: color-mix(in oklch, var(--rs-accent), transparent 15%);
+  font-size: 0.76rem;
+  font-style: normal;
+}
+
+.exchange-card__reselect-note {
+  border-radius: 7px;
+  background: color-mix(in oklch, var(--rs-accent), transparent 86%);
+  padding: 10px 12px;
+  font-size: 0.85rem;
+  line-height: 1.55;
+}
+
+.exchange-card__reselect-form {
+  display: grid;
+  gap: 10px;
+  border: 1px dashed var(--rs-border);
+  border-radius: 8px;
+  padding: 12px;
+}
+
 .exchange-card p {
   margin: 0;
 }

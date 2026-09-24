@@ -41,6 +41,18 @@ const seedItems: Item[] = [
     created_at: new Date(Date.now() - 1000 * 60 * 60 * 3).toISOString(),
   },
   {
+    id: 'item_bottle',
+    user_id: 'user_me',
+    title: '不锈钢保温水杯',
+    description: '容量 500ml，杯身有一道划痕，功能完好，也可以拿出来交换。',
+    category: '其他',
+    condition: ItemCondition.GOOD,
+    images: [],
+    status: ItemStatus.AVAILABLE,
+    location: '上海 · 徐汇',
+    created_at: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString(),
+  },
+  {
     id: 'item_lamp',
     user_id: 'user_lin',
     title: '木质小夜灯',
