@@ -7,6 +7,7 @@ export const useExchangeStats = (exchanges: () => Exchange[]) => {
   return computed(() => ({
     total: exchanges().length,
     pending: exchanges().filter((item) => item.status === ExchangeStatus.PENDING).length,
+    reselected: exchanges().filter((item) => item.status === ExchangeStatus.RESELECTED).length,
     accepted: exchanges().filter((item) => item.status === ExchangeStatus.ACCEPTED).length,
     rejected: exchanges().filter((item) => item.status === ExchangeStatus.REJECTED).length,
     completed: exchanges().filter((item) => item.status === ExchangeStatus.COMPLETED).length,

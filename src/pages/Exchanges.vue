@@ -10,6 +10,7 @@
     <div class="stats-row">
       <span>全部 {{ stats.total }}</span>
       <span>待确认 {{ stats.pending }}</span>
+      <span>改选待确认 {{ stats.reselected }}</span>
       <span>已同意 {{ stats.accepted }}</span>
       <span>已完成 {{ stats.completed }}</span>
     </div>
@@ -32,9 +33,11 @@
         :exchange="exchange"
         :items="itemStore.items"
         :users="authStore.users"
-        @accept="exchangeStore.accept"
-        @reject="exchangeStore.reject"
+        @accept="acceptExchange"
+        @reject="rejectExchange"
         @complete="completeExchange"
+        @accept-reselect="acceptReselect"
+        @reselect="reselectExchange"
       />
     </div>
     <EmptyState
@@ -51,12 +54,13 @@ import { computed, ref } from 'vue';
 
 import EmptyState from '@/components/common/EmptyState.vue';
 import ExchangeCard from '@/components/common/ExchangeCard.vue';
-import { EXCHANGE_STATUS_OPTIONS, ExchangeStatus } from '@/constants/exchange';
-import { PAGE_MESSAGES } from '@/constants/messages';
+import { EXCHANGE_STATUS_OPTIONS } from '@/constants/exchange';
+import { PAGE_MESSAGES, RESELECT_MESSAGES } from '@/constants/messages';
 import { useExchangeStats } from '@/hooks/useExchangeStats';
 import { useAuthStore } from '@/stores/authStore';
 import { useExchangeStore } from '@/stores/exchangeStore';
 import { useItemStore } from '@/stores/itemStore';
+import { message } from '@/utils/message';
 
 const authStore = useAuthStore();
 const itemStore = useItemStore();
@@ -73,10 +77,27 @@ const mine = computed(() => {
 const visibleExchanges = computed(() => mine.value);
 const stats = useExchangeStats(() => exchangeStore.exchanges);
 
-const completeExchange = async (id: string) => {
-  await exchangeStore.complete(id);
-  itemStore.items = itemStore.items.map((item) => item);
+const runAction = async (action: () => Promise<unknown>) => {
+  try {
+    await action();
+  } catch (error) {
+    message(error instanceof Error ? error.message : '操作失败', 'error');
+  }
 };
 
-void ExchangeStatus.PENDING;
+const acceptExchange = (id: string) => runAction(() => exchangeStore.accept(id));
+const rejectExchange = (id: string) => runAction(() => exchangeStore.reject(id));
+const completeExchange = (id: string) =>
+  runAction(async () => {
+    await exchangeStore.complete(id);
+    await itemStore.hydrate();
+  });
+const acceptReselect = (id: string) => runAction(() => exchangeStore.acceptReselect(id));
+const reselectExchange = (id: string, proposedFromItemId: string) => {
+  if (!proposedFromItemId) {
+    message(RESELECT_MESSAGES.needPick, 'error');
+    return;
+  }
+  void runAction(() => exchangeStore.reselect(id, proposedFromItemId));
+};
 </script>

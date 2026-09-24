@@ -588,6 +588,21 @@ textarea {
   margin: 0;
 }
 
+.exchange-card__reselect-note {
+  border-radius: 7px;
+  background: color-mix(in oklch, var(--rs-accent), transparent 86%);
+  padding: 10px 12px;
+  color: color-mix(in oklch, var(--rs-accent), transparent 18%);
+  font-size: 0.88rem;
+}
+
+.exchange-card__reselect {
+  display: grid;
+  gap: 12px;
+  border-top: 1px dashed var(--rs-border);
+  padding-top: 12px;
+}
+
 .exchange-card__actions {
   display: flex;
   flex-wrap: wrap;

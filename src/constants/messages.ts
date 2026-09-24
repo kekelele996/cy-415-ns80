@@ -16,10 +16,17 @@ export const FORM_MESSAGES = {
   exchangeNeedOwnItem: '请先发布一件可交换物品',
 };
 
+export const RESELECT_MESSAGES = {
+  needPick: '请另选一件申请人的可交换物品',
+  noCandidates: '申请人暂时没有其他可交换物品',
+  awaiting: '物主已另选物品，等待申请人确认',
+  candidatePrefix: '改选候选：',
+};
+
 export const LOG_MESSAGES = {
   storageHydrated: 'storage hydrated with status maps',
   itemStatusUsed: `ItemStatus includes ${ItemStatus.AVAILABLE}, ${ItemStatus.EXCHANGED}, ${ItemStatus.OFFLINE}`,
-  exchangeStatusUsed: `ExchangeStatus includes ${ExchangeStatus.PENDING}, ${ExchangeStatus.ACCEPTED}, ${ExchangeStatus.REJECTED}, ${ExchangeStatus.COMPLETED}`,
+  exchangeStatusUsed: `ExchangeStatus includes ${ExchangeStatus.PENDING}, ${ExchangeStatus.RESELECTED}, ${ExchangeStatus.ACCEPTED}, ${ExchangeStatus.REJECTED}, ${ExchangeStatus.COMPLETED}`,
 };
 
 export const STATUS_MESSAGE_MAP = {
@@ -27,6 +34,7 @@ export const STATUS_MESSAGE_MAP = {
   [ItemStatus.EXCHANGED]: '这件物品已完成交换',
   [ItemStatus.OFFLINE]: '这件物品已下架',
   [ExchangeStatus.PENDING]: '等待对方确认',
+  [ExchangeStatus.RESELECTED]: '物主已改选，等待申请人确认',
   [ExchangeStatus.ACCEPTED]: '交换已同意，可确认完成',
   [ExchangeStatus.REJECTED]: '交换请求已拒绝',
   [ExchangeStatus.COMPLETED]: '交换流程已完成',

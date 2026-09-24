@@ -44,6 +44,20 @@ export const useExchangeStore = defineStore('exchanges', {
       this.exchanges = await exchangeApi.list();
       message('已拒绝交换', 'success');
     },
+    /** 物主改选申请人的另一件物品，提交后等待申请人确认 */
+    async reselect(id: string, proposedFromItemId: string) {
+      const exchange = await exchangeApi.reselect(id, proposedFromItemId);
+      this.exchanges = await exchangeApi.list();
+      message('改选已提交，等待申请人确认', 'success');
+      return exchange;
+    },
+    /** 申请人接受改选，交换对象以改选结果为准 */
+    async acceptReselect(id: string) {
+      const exchange = await exchangeApi.acceptReselect(id);
+      this.exchanges = await exchangeApi.list();
+      message('已接受改选，交换对象已更新', 'success');
+      return exchange;
+    },
     async complete(id: string) {
       await exchangeApi.transition(id, ExchangeStatus.COMPLETED);
       this.exchanges = await exchangeApi.list();

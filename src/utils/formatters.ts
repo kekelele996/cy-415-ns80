@@ -18,6 +18,7 @@ export const formatItemStatus = (status: ItemStatus) => {
 export const formatExchangeStatus = (status: ExchangeStatus) => {
   const map: Record<ExchangeStatus, string> = {
     [ExchangeStatus.PENDING]: '待确认',
+    [ExchangeStatus.RESELECTED]: '改选待确认',
     [ExchangeStatus.ACCEPTED]: '已同意',
     [ExchangeStatus.REJECTED]: '已拒绝',
     [ExchangeStatus.COMPLETED]: '已完成',
@@ -46,6 +47,7 @@ export const statusToneClass = (status: ItemStatus | ExchangeStatus) => {
   if (status === ItemStatus.AVAILABLE || status === ExchangeStatus.ACCEPTED) return 'status-good';
   if (status === ItemStatus.OFFLINE || status === ExchangeStatus.REJECTED) return 'status-muted';
   if (status === ItemStatus.EXCHANGED || status === ExchangeStatus.COMPLETED) return 'status-done';
+  // PENDING 与 RESELECTED 都在等待下一方确认，沿用等待色调
   return 'status-wait';
 };
 

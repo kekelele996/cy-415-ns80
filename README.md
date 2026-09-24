@@ -17,6 +17,7 @@ ReSwap 是一个纯前端以物换物 Web 应用。用户可以本地模拟登�
 - 物品详情、物主资料、选择自己的物品发起交换。
 - 发布物品，支持本地 base64 图片上传、分类和成色选择。
 - 交换管理，区分我发起的和我收到的请求，支持同意、拒绝、完成。
+- 改选：物主不同意原候选物品时，可从申请人当前可交换的物品里另选一件提交，待申请人确认；申请人接受后交换对象以改选结果为准，拒绝则请求结束，改选期间双方物品均不锁定。
 - 个人中心，编辑资料、上传头像、查看我发布的物品。
 - 主题切换、全局错误处理和 Vant 提示。
 
@@ -96,7 +97,9 @@ src/
 - `src/pages/Publish.vue`
 - `src/pages/Profile.vue`
 
-### ExchangeStatus
+- **ExchangeStatus**
+
+值：PENDING = 'pending'（待确认）、RESELECTED = 'reselected'（物主已改选，待申请人确认）、ACCEPTED = 'accepted'、REJECTED = 'rejected'、COMPLETED = 'completed'
 
 定义位置：`src/constants/exchange.ts`
 
@@ -112,6 +115,8 @@ src/
 - `src/components/common/ExchangeCard.vue`
 - `src/pages/ItemDetail.vue`
 - `src/pages/Exchanges.vue`
+
+改选流程：物主对 `PENDING` 请求执行改选 → `RESELECTED`（记录 `proposed_from_item_id`，原候选物品保持可交换）；申请人接受 → `ACCEPTED` 且 `from_item_id` 改为改选物品；申请人拒绝 → `REJECTED`，双方物品不变；完成时仅把最终约定的两件物品标记为 `EXCHANGED`。
 
 ## 分层与高耦合约束
 
